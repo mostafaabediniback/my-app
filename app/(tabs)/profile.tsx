@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useAuth } from '@/contexts/AuthContext';
-import { Colors } from '@/constants/colors';
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { useAuth } from "@/contexts/AuthContext";
+import { Colors } from "@/constants/colors";
 
 export default function ProfileScreen() {
   const { logout } = useAuth();
@@ -18,23 +18,17 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Colors.light.background,
   },
-  title: {
-    fontSize: 22,
-    marginBottom: 30,
-    color: Colors.light.text,
-  },
+  title: { fontSize: 22, marginBottom: 30, color: Colors.light.text },
   button: {
     backgroundColor: Colors.light.secondary,
+    
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 10,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
+  buttonText: { color: "#fff", fontSize: 16 },
 });

@@ -1,41 +1,79 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { Colors } from "@/constants/colors";
 import HomeHeader from "@/components/HomeHeader";
 import QuickActions from "@/components/QuickActions";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
+  const router = useRouter();
+
+  const goToLogin = () => {
+    router.push("/login");
+  };
+
   return (
-    <ScrollView className="flex-1 bg-gray-100">
+    <ScrollView 
+      style={styles.body}
+      contentContainerStyle={{ direction: "ltr" }}
+    >
       <HomeHeader />
-      <View className="px-5 mt-4">
-        <Text className="text-right text-lg font-bold text-gray-700 mb-3">
-          دسترسی سریع
-        </Text>
-        <QuickActions />
+
+      <View>
+        <Text style={styles.headText}>دسترسی سریع</Text>
+
+        <View style={styles.quickActionsContainer}>
+          <QuickActions />
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={goToLogin}>
+          <Text style={styles.buttonText}>رفتن به صفحه ورود</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
-    // <View style={styles.container}>
-    //   <Text style={styles.title}>صفحه خانه 🏠</Text>
-    //   <Text style={styles.text}>به نسخه مهمان یا کاربر لاگین خوش اومدی!</Text>
-    // </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: Colors.light.background,
+  body: {
+    padding: 10,
+    direction: "rtl",
+    writingDirection: "rtl",
   },
-  title: {
-    fontSize: 24,
+
+  headText: {
+    marginBottom: 10,
+    fontSize: 18,
     fontWeight: "bold",
-    color: Colors.light.primary,
-    marginBottom: 8,
+    textAlign: "right",
   },
-  text: {
+
+  quickActionsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "flex-end",
+    gap: 12,
+    marginBottom: 20,
+  },
+
+  button: {
+    marginTop: 20,
+    backgroundColor: Colors.light.primary,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: "#fff",
     fontSize: 16,
-    color: Colors.light.text,
+    fontWeight: "bold",
   },
 });
+
+
