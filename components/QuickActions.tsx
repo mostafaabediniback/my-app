@@ -1,5 +1,6 @@
 import { View, Pressable, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { showToast } from "@/components/Toast";
 
 const actions = [
   { title: "پرداخت صدقه", icon: "heart-outline" },
@@ -20,7 +21,9 @@ export default function QuickActions() {
             styles.card,
             pressed && { opacity: 0.8 },
           ]}
-          onPress={() => alert(item.title)}
+          onPress={() =>
+            showToast.info(item.title, 'این قابلیت به زودی فعال می‌شود')
+          }
         >
           <Ionicons name={item.icon as any} size={28} color="#06b6d4" />
           <Text style={styles.title}>{item.title}</Text>

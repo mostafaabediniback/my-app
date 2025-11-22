@@ -3,6 +3,7 @@ import useAuthStore from "../store/useAuthStore";
 // import { signIn, signOut } from "../api/authApi";
 import { useRouter } from "expo-router";
 import { signIn, signOut } from "@/services/authApi";
+import { showToast } from "@/components/Toast";
 
 export default function useLogin() {
   const router = useRouter();
@@ -16,7 +17,15 @@ export default function useLogin() {
 
       await loginStore.login(accessToken, user);
 
+      showToast.success('ورود موفق', 'به صدقه خوش آمدید');
+
       router.push("/");
+    },
+    onError: (error: any) => {
+      showToast.error(
+        'خطا در ورود',
+        error?.response?.data?.message || 'نام کاربری یا رمز عبور اشتباه است'
+      );
     },
   });
 

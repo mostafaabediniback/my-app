@@ -1,6 +1,6 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Alert } from "react-native";
+import { showToast } from "@/components/Toast";
 
 export const serverUrl = "http://192.168.11.25:8080/api";
 
@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
       message = error.message;
     }
 
-    Alert.alert("خطا", message);
+    showToast.error('خطا', message);
     return Promise.reject(error);
   }
 );

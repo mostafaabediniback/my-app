@@ -18,6 +18,9 @@ export default function Banners() {
           marginRight: 12,
           padding: 16,
           justifyContent: "space-between",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
         <Text style={{ color: "#BBDEFB", fontSize: 13, textAlign: "right" }}>
@@ -47,6 +50,9 @@ export default function Banners() {
           marginRight: 12,
           padding: 16,
           justifyContent: "space-between",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
         <Text style={{ color: "#C5CAE9", fontSize: 13, textAlign: "right" }}>

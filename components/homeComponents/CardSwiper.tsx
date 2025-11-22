@@ -53,7 +53,7 @@ export default function CardSwiper() {
   return (
     <Carousel
       width={width - 32}
-      height={170}
+      height={150}
       style={{
         alignSelf: "center",
       }}

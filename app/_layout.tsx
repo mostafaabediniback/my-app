@@ -2,6 +2,7 @@ import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/contexts/AuthContext";
 import useAuthStore from "@/store/useAuthStore";
+import Toast from "@/components/Toast";
 
 const queryClient = new QueryClient();
 export const unstable_settings = {
@@ -24,6 +25,7 @@ export default function RootLayout() {
             </>
           )}
         </Stack>
+        <Toast />
       </AuthProvider>
     </QueryClientProvider>
   );

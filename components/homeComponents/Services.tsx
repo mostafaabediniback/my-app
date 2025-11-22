@@ -45,14 +45,14 @@ export default function Services() {
           </Text>
         </View>
                 <TouchableOpacity activeOpacity={0.8}>
-          <Text
+          {/* <Text
             style={{
               fontSize: 12,
               color: "#1A73E8",
             }}
           >
             مشاهده همه
-          </Text>
+          </Text> */}
         </TouchableOpacity>
       </View>
 
