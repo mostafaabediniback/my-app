@@ -34,11 +34,12 @@ export default function NotificationsScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F7F8FA" }}>
       <View
         style={{
-          flexDirection: "row-reverse",
+          flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
           paddingHorizontal: 16,
           paddingVertical: 12,
+          margin:10
         }}
       >
         <TouchableOpacity onPress={() => router.back()}>

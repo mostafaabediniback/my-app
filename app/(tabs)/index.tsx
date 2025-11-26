@@ -78,7 +78,7 @@
 
 // app/home/HomeScreen.tsx
 import Banners from "@/components/homeComponents/Banners";
-import CardSwiper from "@/components/homeComponents/CardSwiper";
+import CampaignStories from "@/components/homeComponents/CardSwiper";
 import Header from "@/components/homeComponents/Header";
 import Services from "@/components/homeComponents/Services";
 import React from "react";
@@ -98,7 +98,7 @@ export default function HomeScreen() {
         <Header />
 
         <View style={{ marginTop: 16, paddingHorizontal: 16 }}>
-          <CardSwiper />
+          <CampaignStories />
         </View>
 
         <View style={{ marginTop: 16 }}>

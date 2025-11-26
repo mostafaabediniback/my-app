@@ -57,7 +57,7 @@ export default function ProfileScreen() {
           <View style={styles.card}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
-                {activeUser.fullName.slice(0, 2)}
+                {activeUser?.fullName?.slice(0, 2)}
               </Text>
             </View>
             <Text style={styles.name}>{activeUser.fullName}</Text>
