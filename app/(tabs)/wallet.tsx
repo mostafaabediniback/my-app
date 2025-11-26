@@ -3,9 +3,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import {
+    Modal,
     ScrollView,
     StyleSheet,
     Text,
+    TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -125,6 +127,30 @@ const transactions = [
 
 export default function WalletScreen() {
   const token = useAuthStore((state) => state.token);
+  const [cards, setCards] = React.useState<{holder: string; bank: string; number: string}[]>([]);
+  const [showAddCard, setShowAddCard] = React.useState(false);
+  const [cardHolder, setCardHolder] = React.useState('');
+  const [cardBank, setCardBank] = React.useState('');
+  const [cardNumber, setCardNumber] = React.useState('');
+
+  const formatCardNumber = (value: string) => {
+    const digits = value.replace(/[^0-9]/g, '').slice(0, 16);
+    const parts = [] as string[];
+    for (let i = 0; i < digits.length; i += 4) parts.push(digits.slice(i, i + 4));
+    return parts.join('-');
+  };
+
+  const isValidCard = () => cardHolder.trim().length > 0 && cardBank.trim().length > 0 && cardNumber.replace(/[^0-9]/g, '').length === 16;
+
+  const handleSaveCard = () => {
+    if (!isValidCard()) return;
+    const newCard = { holder: cardHolder.trim(), bank: cardBank.trim(), number: formatCardNumber(cardNumber) };
+    setCards((prev) => [newCard, ...prev]);
+    setCardHolder('');
+    setCardBank('');
+    setCardNumber('');
+    setShowAddCard(false);
+  };
 
   if (!token) {
     return <AccessGate />;
@@ -203,6 +229,75 @@ export default function WalletScreen() {
             ))}
           </View>
         </View>
+
+        <View style={[styles.section, { marginTop: 16 }] }>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>کارت‌های بانکی</Text>
+            <TouchableOpacity onPress={() => setShowAddCard(true)}>
+              <Text style={styles.seeAllText}>افزودن کارت</Text>
+            </TouchableOpacity>
+          </View>
+          {cards.length === 0 ? (
+            <View style={styles.emptyState}>
+              <Ionicons name="card-outline" size={32} color="#A0A4AB" />
+              <Text style={styles.emptyText}>هنوز کارتی اضافه نشده است</Text>
+            </View>
+          ) : (
+            <View style={styles.cardsList}>
+              {cards.map((c, idx) => (
+                <View key={idx} style={[styles.cardItem, idx === cards.length - 1 && styles.lastTransaction] }>
+                  <View style={styles.cardIcon}>
+                    <Ionicons name="card-outline" size={22} color="#1A73E8" />
+                  </View>
+                  <View style={styles.cardInfo}>
+                    <Text style={styles.cardBank}>{c.bank}</Text>
+                    <Text style={styles.cardMeta}>{c.holder}</Text>
+                  </View>
+                  <Text style={styles.cardNumber}>{c.number}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+
+        <Modal visible={showAddCard} transparent animationType="fade" onRequestClose={() => setShowAddCard(false)}>
+          <View style={styles.modalBackdrop}>
+            <View style={styles.modalCard}>
+              <Text style={styles.modalTitle}>افزودن کارت بانکی</Text>
+              <TextInput
+                value={cardHolder}
+                onChangeText={setCardHolder}
+                placeholder="نام دارنده کارت"
+                placeholderTextColor="#A0A4AB"
+                style={styles.input}
+              />
+              <TextInput
+                value={cardBank}
+                onChangeText={setCardBank}
+                placeholder="نام بانک"
+                placeholderTextColor="#A0A4AB"
+                style={styles.input}
+              />
+              <TextInput
+                value={formatCardNumber(cardNumber)}
+                onChangeText={setCardNumber}
+                keyboardType="number-pad"
+                placeholder="شماره کارت 16 رقمی"
+                placeholderTextColor="#A0A4AB"
+                style={styles.input}
+                maxLength={19}
+              />
+              <View style={styles.modalActions}>
+                <TouchableOpacity onPress={() => setShowAddCard(false)} style={[styles.modalButton, styles.modalCancel] }>
+                  <Text style={styles.modalButtonTextCancel}>انصراف</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleSaveCard} disabled={!isValidCard()} style={[styles.modalButton, isValidCard() ? styles.modalConfirm : styles.modalDisabled] }>
+                  <Text style={styles.modalButtonText}>ذخیره</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -343,5 +438,107 @@ const styles = StyleSheet.create({
   },
   chargeAmount: {
     color: '#34C759',
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  emptyText: {
+    marginTop: 8,
+    fontSize: 13,
+    color: '#7A7F87',
+  },
+  cardsList: {
+    marginTop: 8,
+  },
+  cardItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#F0F1F4',
+  },
+  cardIcon: {
+    marginLeft: 12,
+  },
+  cardInfo: {
+    flex: 1,
+    alignItems: 'flex-start',
+  },
+  cardBank: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#1A1C1E',
+  },
+  cardMeta: {
+    fontSize: 12,
+    color: '#7A7F87',
+    marginTop: 4,
+  },
+  cardNumber: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1A1C1E',
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.35)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+  },
+  modalCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 16,
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1A1C1E',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#E3E5EA',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    fontSize: 14,
+    color: '#1A1C1E',
+    marginBottom: 10,
+    textAlign: 'right',
+  },
+  modalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  modalButton: {
+    flex: 1,
+    marginHorizontal: 6,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  modalCancel: {
+    borderWidth: 1,
+    borderColor: '#1A73E8',
+  },
+  modalConfirm: {
+    backgroundColor: '#1A73E8',
+  },
+  modalDisabled: {
+    backgroundColor: '#A0A4AB',
+  },
+  modalButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+  },
+  modalButtonTextCancel: {
+    color: '#1A73E8',
+    fontWeight: '600',
   },
 });
